@@ -1,0 +1,44 @@
+{
+  "name": "gendiff-hr",
+  "version": "0.0.1",
+  "description": "second project by Hexlet",
+  "main": "dist/index.js",
+  "bin": {
+    "gendiff": "dist/bin/gendiff.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khloptsevps/gendiff-hr.git"
+  },
+  "keywords": [
+    "khloptsev",
+    "khloptsevps",
+    "hangryrabbit",
+    "hangry_rabbit",
+    "hr"
+  ],
+  "author": "khlotsevps",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/khloptsevps/gendiff-hr/issues"
+  },
+  "homepage": "https://github.com/khloptsevps/gendiff-hr#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/node": "^7.8.7",
+    "@babel/preset-env": "^7.9.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
+  },
+  "dependencies": {}
+}
