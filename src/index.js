@@ -23,7 +23,6 @@ const genDiff = (firstPath, secondPath) => {
         acc.push(`  + ${key}: ${secondJson[key]}`);
       }
     } else if ((has(firstJson, key) && !has(secondJson, key))) {
-      console.log(key);
       acc.push(`  - ${key}: ${firstJson[key]}`);
     } else {
       acc.push(`  + ${key}: ${secondJson[key]}`);
