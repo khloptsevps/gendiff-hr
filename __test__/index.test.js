@@ -2,12 +2,20 @@
 import path from 'path';
 import genDiff from '../src/index.js';
 
-const firstPath = path.resolve(__dirname, './fixtures/before.json');
-const secondPath = path.resolve(__dirname, './fixtures/after.json');
+const firstPathToJson = path.resolve(__dirname, '../__fixtures__/before.json');
+const secondPathToJson = path.resolve(__dirname, '../__fixtures__/after.json');
 
-test('FilePaths', () => {
-  expect(firstPath).toEqual('/Users/khloptsev/JS/project/gendiff-hr/__test__/fixtures/before.json');
-  expect(secondPath).toEqual('/Users/khloptsev/JS/project/gendiff-hr/__test__/fixtures/after.json');
+const firstPathtoYml = path.resolve(__dirname, '../__fixtures__/before.yml');
+const secondPathtoYml = path.resolve(__dirname, '../__fixtures__/after.yml');
+
+test('FilePathsToJson', () => {
+  expect(firstPathToJson).toEqual('/Users/khloptsev/JS/project/gendiff-hr/__fixtures__/before.json');
+  expect(secondPathToJson).toEqual('/Users/khloptsev/JS/project/gendiff-hr/__fixtures__/after.json');
+});
+
+test('FilePathsToYml', () => {
+  expect(firstPathtoYml).toEqual('/Users/khloptsev/JS/project/gendiff-hr/__fixtures__/before.yml');
+  expect(secondPathtoYml).toEqual('/Users/khloptsev/JS/project/gendiff-hr/__fixtures__/after.yml');
 });
 
 test('plainDiffTwoJsonFiles', () => {
@@ -19,5 +27,17 @@ test('plainDiffTwoJsonFiles', () => {
   - follow: false
   + verbose: true
 }`;
-  expect(genDiff(firstPath, secondPath)).toEqual(diff);
+  expect(genDiff(firstPathToJson, secondPathToJson)).toEqual(diff);
+});
+
+test('plainDiffTwoYmlFiles', () => {
+  const diff = `{
+    host: hexlet.io
+  - timeout: 50
+  + timeout: 20
+  - proxy: 123.234.53.22
+  - follow: false
+  + verbose: true
+}`;
+  expect(genDiff(firstPathtoYml, secondPathtoYml)).toEqual(diff);
 });
