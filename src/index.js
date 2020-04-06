@@ -1,33 +1,30 @@
-import path from 'path';
-import fs from 'fs';
 import { has } from 'lodash';
-
-const getConfig = (pathto) => JSON.parse(fs.readFileSync(path.resolve(pathto)));
+import { parsing } from './parsers.js';
 
 // genDiff
 const genDiff = (firstPath, secondPath) => {
-  const firstJson = getConfig(firstPath);
-  const secondJson = getConfig(secondPath);
-  const firstKeys = Object.keys(firstJson);
-  const secondKeys = Object.keys(secondJson);
+  const firstConfig = parsing(firstPath);
+  const secondConfig = parsing(secondPath);
+  const firstKeys = Object.keys(firstConfig);
+  const secondKeys = Object.keys(secondConfig);
   const combineKeys = secondKeys.reduce((acc, item) => {
-    if (!has(firstJson, item)) {
+    if (!has(firstConfig, item)) {
       acc.push(item);
     }
     return acc;
   }, [...firstKeys]);
   const difference = combineKeys.reduce((acc, key) => {
-    if (has(firstJson, key) && has(secondJson, key)) {
-      if (firstJson[key] === secondJson[key]) {
-        acc.push(`    ${key}: ${firstJson[key]}`);
+    if (has(firstConfig, key) && has(secondConfig, key)) {
+      if (firstConfig[key] === secondConfig[key]) {
+        acc.push(`    ${key}: ${firstConfig[key]}`);
       } else {
-        acc.push(`  - ${key}: ${firstJson[key]}`);
-        acc.push(`  + ${key}: ${secondJson[key]}`);
+        acc.push(`  - ${key}: ${firstConfig[key]}`);
+        acc.push(`  + ${key}: ${secondConfig[key]}`);
       }
-    } else if ((has(firstJson, key) && !has(secondJson, key))) {
-      acc.push(`  - ${key}: ${firstJson[key]}`);
+    } else if ((has(firstConfig, key) && !has(secondConfig, key))) {
+      acc.push(`  - ${key}: ${firstConfig[key]}`);
     } else {
-      acc.push(`  + ${key}: ${secondJson[key]}`);
+      acc.push(`  + ${key}: ${secondConfig[key]}`);
     }
     return acc;
   }, []);
