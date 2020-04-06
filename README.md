@@ -16,7 +16,7 @@
 [![asciicast](https://asciinema.org/a/vhYYtBhrHM5WpMk23TcFCbIz8.svg)](https://asciinema.org/a/vhYYtBhrHM5WpMk23TcFCbIz8)
 
 Поиск различий между двумя плоскими yml-файлами
-[![asciicast](https://asciinema.org/a/X1XrmKq4gYzdvewQ7C9wm8z4H.svg)](https://asciinema.org/a/X1XrmKq4gYzdvewQ7C9wm8z4H)
+[![asciicast](https://asciinema.org/a/qV6JuToE85hmZaeZ6ARlxx5RP.svg)](https://asciinema.org/a/qV6JuToE85hmZaeZ6ARlxx5RP)
 
 ## Setup
 
