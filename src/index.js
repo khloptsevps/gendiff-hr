@@ -2,10 +2,12 @@ import path from 'path';
 import fs from 'fs';
 import { has } from 'lodash';
 
+const getConfig = (pathto) => JSON.parse(fs.readFileSync(path.resolve(pathto)));
+
 // genDiff
 const genDiff = (firstPath, secondPath) => {
-  const firstJson = JSON.parse(fs.readFileSync(path.resolve(firstPath)));
-  const secondJson = JSON.parse(fs.readFileSync(path.resolve(secondPath)));
+  const firstJson = getConfig(firstPath);
+  const secondJson = getConfig(secondPath);
   const firstKeys = Object.keys(firstJson);
   const secondKeys = Object.keys(secondJson);
   const combineKeys = secondKeys.reduce((acc, item) => {
@@ -29,7 +31,7 @@ const genDiff = (firstPath, secondPath) => {
     }
     return acc;
   }, []);
-  console.log(`{\n${difference.join('\n')}\n}`);
+  return `{\n${difference.join('\n')}\n}`;
 };
 
 export default genDiff;
