@@ -13,10 +13,13 @@
 
 ## Пример использования
 Поиск различий между двумя плоскими json-файлами
-[![asciicast](https://asciinema.org/a/vhYYtBhrHM5WpMk23TcFCbIz8.svg)](https://asciinema.org/a/vhYYtBhrHM5WpMk23TcFCbIz8)
+[![asciicast](https://asciinema.org/a/NHwHUlBfftyllEDvQb6tHfaDa.svg)](https://asciinema.org/a/NHwHUlBfftyllEDvQb6tHfaDa)
 
 Поиск различий между двумя плоскими yml-файлами
-[![asciicast](https://asciinema.org/a/qV6JuToE85hmZaeZ6ARlxx5RP.svg)](https://asciinema.org/a/qV6JuToE85hmZaeZ6ARlxx5RP)
+[![asciicast](https://asciinema.org/a/8qOwcfnvpa4midyK6eT3uiGl8.svg)](https://asciinema.org/a/8qOwcfnvpa4midyK6eT3uiGl8)
+
+Поиск различий между двумя плоскими ini-файлами
+[![asciicast](https://asciinema.org/a/1ajzV1ZgcT1LhZMQoYIzMKmUl.svg)](https://asciinema.org/a/1ajzV1ZgcT1LhZMQoYIzMKmUl)
 
 ## Setup
 
