@@ -11,6 +11,12 @@
 * Поддержка разных форматов: json, yml, ini;
 * Генерация отчета в виде plain text, pretty и json (в процессе)
 
+## Setup
+
+```sh
+$ make install
+```
+
 ## Пример использования
 Поиск различий между двумя плоскими json-файлами
 [![asciicast](https://asciinema.org/a/NHwHUlBfftyllEDvQb6tHfaDa.svg)](https://asciinema.org/a/NHwHUlBfftyllEDvQb6tHfaDa)
@@ -21,8 +27,5 @@
 Поиск различий между двумя плоскими ini-файлами
 [![asciicast](https://asciinema.org/a/1ajzV1ZgcT1LhZMQoYIzMKmUl.svg)](https://asciinema.org/a/1ajzV1ZgcT1LhZMQoYIzMKmUl)
 
-## Setup
-
-```sh
-$ make install
-```
+Поиск различий между двумя файлами с древовидной структурой. (json, yml, ini)
+[![asciicast](https://asciinema.org/a/6QIONtVlNDp5iG2gtY4chOcbk.svg)](https://asciinema.org/a/6QIONtVlNDp5iG2gtY4chOcbk)
