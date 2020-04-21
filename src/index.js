@@ -1,4 +1,6 @@
 import { has, union, isObject } from 'lodash';
+import formatterJson from './formatters/json-formatter.js';
+import plain from './formatters/plain-formatter.js';
 import { parsing } from './parsers.js';
 
 // diffTree
@@ -30,48 +32,13 @@ export const makeDifferenceTree = (beforeConfig, afterConfig) => {
   return result;
 };
 
-const stringify = (data, lvl = 0) => {
-  if (!isObject(data)) {
-    return data;
-  }
-  const keys = Object.keys(data);
-  const result = keys.map((key) => (`{\n${' '.repeat(lvl)}${key}: ${stringify(data[key])}\n${' '.repeat(lvl - 4)}}`));
-  return result;
-};
-
-const plain = (tree, space = 4) => {
-  const result = tree.map((node) => {
-    if (node.status === 'unmodified') {
-      const spaceCount = space;
-      return `${' '.repeat(spaceCount) + node.name}: ${stringify(node.value, space + 4)}`;
-    }
-    if (node.status === 'modified') {
-      const spaceCount = space - 2;
-      return [
-        `${' '.repeat(spaceCount)}- ${node.name}: ${stringify(node.before, space + 4)}`,
-        `${' '.repeat(spaceCount)}+ ${node.name}: ${stringify(node.after, space + 4)}`,
-      ].join('\n');
-    }
-    if (node.status === 'added') {
-      const spaceCount = space - 2;
-      return `${' '.repeat(spaceCount)}+ ${node.name}: ${stringify(node.value, space + 4)}`;
-    }
-    if (node.status === 'deleted') {
-      const spaceCount = space - 2;
-      return `${' '.repeat(spaceCount)}- ${node.name}: ${stringify(node.value, space + 4)}`;
-    }
-    return `${' '.repeat(space)}${node.name}: {\n${plain(node.children, space + 4)}\n${' '.repeat(space)}}`;
-  });
-  return `${result.join('\n')}`;
-};
-
 const genDiff = (firstConfig, secondConfig, format) => {
   const diffTree = makeDifferenceTree(parsing(firstConfig), parsing(secondConfig));
   switch (format) {
-    case 'pretty':
-      return 'work in process';
+    case 'plain':
+      return `${plain(diffTree, [])}`;
     default:
-      return `{\n${plain(diffTree)}\n}`;
+      return `{\n${formatterJson(diffTree)}\n}`;
   }
 };
 
