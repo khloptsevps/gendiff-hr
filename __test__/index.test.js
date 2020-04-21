@@ -1,19 +1,13 @@
 // @ts-check
 import path from 'path';
 import genDiff from '../src/index.js';
-// import { parsing } from '../src/parsers.js';
 
-
-const diff = `{
+const recursiveDiff = `{
     host: hexlet.io
   - timeout: 50
   + timeout: 20
   - proxy: 123.234.53.22
   - follow: false
-  + verbose: true
-}`;
-
-const recursiveDiff = `{
     common: {
         setting1: Value 1
       - setting2: 200
@@ -43,55 +37,59 @@ const recursiveDiff = `{
   - group2: {
         abc: 12345
     }
+  + verbose: true
   + group3: {
         fee: 100500
     }
 }`;
 
-// flat JSON
-const firstJson = path.resolve(__dirname, './fixtures/before.json');
-const secondJson = path.resolve(__dirname, './fixtures/after.json');
+const plainDiff = `Property 'timeout' was changed from 50 to 20
+Property 'proxy' was deleted
+Property 'follow' was deleted
+Property 'common.setting2' was deleted
+Property 'common.setting3' was changed from true to [complex value]
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'common.follow' was added with value: false
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'group1.baz' was changed from 'bas' to 'bars'
+Property 'group1.nest' was changed from [complex value] to 'str'
+Property 'group2' was deleted
+Property 'verbose' was added with value: true
+Property 'group3' was added with value: [complex value]`;
 
 // recursive JSON
-const firstPathToJson = path.resolve(__dirname, './fixtures/before2.json');
-const secondPathToJson = path.resolve(__dirname, './fixtures/after2.json');
-
-// flat YML
-const firstYml = path.resolve(__dirname, './fixtures/before.yml');
-const secondYml = path.resolve(__dirname, './fixtures/after.yml');
+const firstPathToJson = path.resolve(__dirname, './fixtures/before.json');
+const secondPathToJson = path.resolve(__dirname, './fixtures/after.json');
 
 // recursive YML
-const firstYmlRec = path.resolve(__dirname, './fixtures/before2.yml');
-const secondYmlRec = path.resolve(__dirname, './fixtures/after2.yml');
-
-// flat INI
-const firstIni = path.resolve(__dirname, './fixtures/before.ini');
-const secondIni = path.resolve(__dirname, './fixtures/after.ini');
+const firstYmlRec = path.resolve(__dirname, './fixtures/before.yml');
+const secondYmlRec = path.resolve(__dirname, './fixtures/after.yml');
 
 // recursive Ini
-const firstIniRec = path.resolve(__dirname, './fixtures/before2.ini');
-const secondIniRec = path.resolve(__dirname, './fixtures/after2.ini');
+const firstIniRec = path.resolve(__dirname, './fixtures/before.ini');
+const secondIniRec = path.resolve(__dirname, './fixtures/after.ini');
 
-test('flatJson', () => {
-  expect(genDiff(firstJson, secondJson)).toEqual(diff);
-});
-
-test('recursiveJson', () => {
+test('flat and recursive JSON', () => {
   expect(genDiff(firstPathToJson, secondPathToJson)).toEqual(recursiveDiff);
 });
 
-test('flatYml', () => {
-  expect(genDiff(firstYml, secondYml)).toEqual(diff);
-});
-
-test('recursiveYml', () => {
+test('flat and recursive YML', () => {
   expect(genDiff(firstYmlRec, secondYmlRec)).toEqual(recursiveDiff);
 });
 
-test('flatINI', () => {
-  expect(genDiff(firstIni, secondIni)).toEqual(diff);
+test('flat and recursive INI', () => {
+  expect(genDiff(firstIniRec, secondIniRec)).toEqual(recursiveDiff);
 });
 
-test('recursiveINI', () => {
-  expect(genDiff(firstIniRec, secondIniRec)).toEqual(recursiveDiff);
+test('plain JSON', () => {
+  expect(genDiff(firstPathToJson, secondPathToJson, 'plain')).toEqual(plainDiff);
+});
+
+test('plain YML', () => {
+  expect(genDiff(firstYmlRec, secondYmlRec, 'plain')).toEqual(plainDiff);
+});
+
+test('plain INI', () => {
+  expect(genDiff(firstIniRec, secondIniRec, 'plain')).toEqual(plainDiff);
 });
