@@ -29,3 +29,6 @@ $ make install
 
 Поиск различий между двумя файлами с древовидной структурой. (json, yml, ini)
 [![asciicast](https://asciinema.org/a/6QIONtVlNDp5iG2gtY4chOcbk.svg)](https://asciinema.org/a/6QIONtVlNDp5iG2gtY4chOcbk)
+
+Генерация отчет Plain text
+[![asciicast](https://asciinema.org/a/9frtTWss3jH0jYnCym0j7bz9K.svg)](https://asciinema.org/a/9frtTWss3jH0jYnCym0j7bz9K)
