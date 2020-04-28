@@ -1,4 +1,5 @@
 import { has, union, isObject } from 'lodash';
+import formatterTree from './formatters/tree-formatter.js';
 import formatterJson from './formatters/json-formatter.js';
 import plain from './formatters/plain-formatter.js';
 import { parsing } from './parsers.js';
@@ -37,8 +38,10 @@ const genDiff = (firstConfig, secondConfig, format) => {
   switch (format) {
     case 'plain':
       return `${plain(diffTree, [])}`;
+    case 'json':
+      return formatterJson(diffTree);
     default:
-      return `{\n${formatterJson(diffTree)}\n}`;
+      return `{\n${formatterTree(diffTree)}\n}`;
   }
 };
 
