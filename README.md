@@ -1,4 +1,4 @@
-[![Maintainability](https://api.codeclimate.com/v1/badges/8a394bc756dc729b6f90/maintainability)](https://codeclimate.com/github/khloptsevps/gendiff-hr/maintainability) [![Node.js CI](https://github.com/khloptsevps/gendiff-hr/workflows/Node.js%20CI/badge.svg?branch=master&event=push)](https://github.com/khloptsevps/gendiff-hr/actions)
+[![Node.js CI](https://github.com/khloptsevps/gendiff-hr/workflows/Node.js%20CI/badge.svg?branch=master&event=push)](https://github.com/khloptsevps/gendiff-hr/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/8a394bc756dc729b6f90/maintainability)](https://codeclimate.com/github/khloptsevps/gendiff-hr/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/8a394bc756dc729b6f90/test_coverage)](https://codeclimate.com/github/khloptsevps/gendiff-hr/test_coverage)
 
 # "Вычислитель отличий" / "Generate Difference" 
 
@@ -9,7 +9,7 @@
 ## Возможности утилиты:
 
 * Поддержка разных форматов: json, yml, ini;
-* Генерация отчета в виде plain text, pretty и json (в процессе)
+* Генерация отчета в виде plain text, tree и json;
 
 ## Setup
 
@@ -33,3 +33,7 @@ $ make install
 Генерация отчет Plain text  
 
 [![asciicast](https://asciinema.org/a/9frtTWss3jH0jYnCym0j7bz9K.svg)](https://asciinema.org/a/9frtTWss3jH0jYnCym0j7bz9K)
+
+Генерация отчета json
+
+[![asciicast](https://asciinema.org/a/FPa7x4RfChvShGzOz4dKcokFy.svg)](https://asciinema.org/a/FPa7x4RfChvShGzOz4dKcokFy)
