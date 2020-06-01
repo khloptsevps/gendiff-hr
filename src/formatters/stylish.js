@@ -14,21 +14,21 @@ const stringify = (value, lvl) => {
 const buildTreeFormat = (tree, level = 0) => {
   const result = tree.map((node) => {
     if (node.status === 'unmodified') {
-      return `    ${tab(level)}${node.name}: ${stringify(node.value, level)}`;
+      return `    ${tab(level)}${node.property}: ${stringify(node.value, level)}`;
     }
     if (node.status === 'modified') {
       return [
-        `  ${tab(level)}- ${node.name}: ${stringify(node.before, level)}`,
-        `  ${tab(level)}+ ${node.name}: ${stringify(node.after, level)}`,
+        `  ${tab(level)}- ${node.property}: ${stringify(node.oldValue, level)}`,
+        `  ${tab(level)}+ ${node.property}: ${stringify(node.newValue, level)}`,
       ].join('\n');
     }
     if (node.status === 'added') {
-      return `  ${tab(level)}+ ${node.name}: ${stringify(node.value, level)}`;
+      return `  ${tab(level)}+ ${node.property}: ${stringify(node.value, level)}`;
     }
     if (node.status === 'deleted') {
-      return `  ${tab(level)}- ${node.name}: ${stringify(node.value, level)}`;
+      return `  ${tab(level)}- ${node.property}: ${stringify(node.value, level)}`;
     }
-    return `${tab(level + 1)}${node.name}: {\n${buildTreeFormat(node.children, level + 1)}\n${tab(level + 1)}}`;
+    return `${tab(level + 1)}${node.property}: {\n${buildTreeFormat(node.children, level + 1)}\n${tab(level + 1)}}`;
   });
   return result.join('\n');
 };
