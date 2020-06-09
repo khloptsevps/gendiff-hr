@@ -4,8 +4,6 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 import { isObject, isNaN } from 'lodash';
 
-const getConfigPath = (pathToConfig) => fs.readFileSync(path.resolve(pathToConfig), 'utf-8');
-
 // for ini
 const normalize = (config) => {
   const entries = Object.entries(config);
@@ -24,18 +22,27 @@ const normalize = (config) => {
   return result;
 };
 
+const parsers = {
+  '.json': JSON.parse,
+  '.ini': ini.parse,
+  '.yml': yaml.safeLoad,
+};
+
+const getParser = (extention, fileData) => parsers[extention](fileData);
 
 export const parsing = (config) => {
-  switch (path.extname(config)) {
-    case '.json':
-      return JSON.parse(getConfigPath(config));
-    case '.yml':
-      return yaml.safeLoad(getConfigPath(config));
-    case '.ini':
-      return normalize(ini.parse(getConfigPath(config)));
-    default:
-      throw new Error(`Unknown file extention: '${config}'!`);
+  const fileData = fs.readFileSync(path.resolve(config), 'utf-8');
+
+  const ext = path.extname(config);
+  if (!parsers[ext]) {
+    throw new Error(`Unknown file extention: '${config}'!`);
   }
+
+  const parseFile = getParser(ext, fileData);
+  if (ext === '.ini') {
+    return normalize(parseFile);
+  }
+  return parseFile;
 };
 
 export default parsing;
