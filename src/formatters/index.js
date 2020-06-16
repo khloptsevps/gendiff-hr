@@ -2,10 +2,10 @@ import plain from './plain.js';
 import json from './json.js';
 import stylish from './stylish.js';
 
-const formatterChoose = (tree, format) => {
+const getFormatter = (tree, format) => {
   switch (format) {
     case 'plain':
-      return `${plain(tree, [])}`;
+      return plain(tree);
     case 'json':
       return json(tree);
     default:
@@ -13,4 +13,4 @@ const formatterChoose = (tree, format) => {
   }
 };
 
-export default formatterChoose;
+export default getFormatter;
