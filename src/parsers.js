@@ -1,8 +1,6 @@
-import path from 'path';
-import fs from 'fs';
 import yaml from 'js-yaml';
 import ini from 'ini';
-import { isObject, isNaN } from 'lodash';
+import { isObject } from 'lodash';
 
 // for ini
 const normalize = (config) => {
@@ -11,10 +9,10 @@ const normalize = (config) => {
     if (isObject(value)) {
       return { ...acc, [key]: normalize(value) };
     }
-    if (typeof (value) === 'boolean') {
+    if (typeof value === 'boolean') {
       return { ...acc, [key]: value };
     }
-    if (isNaN(Number(value))) {
+    if (Number.isNaN(Number(value))) {
       return { ...acc, [key]: value };
     }
     return { ...acc, [key]: Number(value) };
@@ -30,19 +28,9 @@ const parsers = {
 
 const getParser = (extention, fileData) => parsers[extention](fileData);
 
-export const parsing = (config) => {
-  const fileData = fs.readFileSync(path.resolve(config), 'utf-8');
-
-  const ext = path.extname(config);
-  if (!parsers[ext]) {
-    throw new Error(`Unknown file extention: '${config}'!`);
-  }
-
+export const parse = (ext, fileData) => {
   const parseFile = getParser(ext, fileData);
-  if (ext === '.ini') {
-    return normalize(parseFile);
-  }
-  return parseFile;
+  return ext === '.ini' ? normalize(parseFile) : parseFile;
 };
 
-export default parsing;
+export default parse;
