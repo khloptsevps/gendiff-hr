@@ -1,36 +1,36 @@
-import { isObject, isNaN } from 'lodash';
+import { isObject } from 'lodash';
 
 const checkValue = (value) => {
   if (isObject(value)) {
     return '[complex value]';
   }
-  if (isNaN(Number(value))) {
+  if (Number.isNaN(Number(value))) {
     return `'${value}'`;
   }
   return value;
 };
 
-const plain = (tree, acc) => {
-  const result = tree
-    .filter((node) => node.status !== 'unmodified')
-    .map((node) => {
-      const property = (!node.children) ? `${node.property}` : [...acc, node.property];
-      const newProperty = [acc, node.property].flat().join('.');
-      if (!node.children) {
-        if (node.status === 'deleted') {
-          return `Property '${newProperty}' was deleted`;
+const plain = (tree) => {
+  const iter = (node, acc) => {
+    const result = node
+      .filter((nnode) => nnode.status !== 'unmodified')
+      .map((n) => {
+        const property = (!n.children) ? n.property : [...acc, n.property];
+        const newProperty = [acc, property].flat().join('.');
+        if (n.children) {
+          return iter(n.children, property);
         }
-        if (node.status === 'added') {
-          return `Property '${newProperty}' was added with value: ${checkValue(node.value)}`;
+        if (n.status === 'added') {
+          return `Property '${newProperty}' was added with value: ${checkValue(n.value)}`;
         }
-        if (node.status === 'modified') {
-          return `Property '${newProperty}' was changed from ${checkValue(node.oldValue)} to ${checkValue(node.newValue)}`;
+        if (n.status === 'modified') {
+          return `Property '${newProperty}' was changed from ${checkValue(n.oldValue)} to ${checkValue(n.newValue)}`;
         }
-      }
-      return plain(node.children, property);
-    })
-    .join('\n');
-  return result;
+        return `Property '${newProperty}' was deleted`;
+      });
+    return result.join('\n');
+  };
+  return iter(tree, []);
 };
 
 
