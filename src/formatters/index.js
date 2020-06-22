@@ -2,7 +2,7 @@ import plain from './plain.js';
 import json from './json.js';
 import stylish from './stylish.js';
 
-const getFormatter = (tree, format) => {
+const buildFormat = (tree, format) => {
   switch (format) {
     case 'plain':
       return plain(tree);
@@ -13,4 +13,4 @@ const getFormatter = (tree, format) => {
   }
 };
 
-export default getFormatter;
+export default buildFormat;
