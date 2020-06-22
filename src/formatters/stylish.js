@@ -1,6 +1,6 @@
 import { isObject } from 'lodash';
 
-const tab = (z) => '    '.repeat(z);
+const tab = (level) => '    '.repeat(level);
 
 const stringify = (value, lvl) => {
   if (!isObject(value)) {
@@ -13,22 +13,23 @@ const stringify = (value, lvl) => {
 
 const buildTreeFormat = (tree, level = 0) => {
   const result = tree.flatMap((node) => {
-    if (node.status === 'unmodified') {
-      return `    ${tab(level)}${node.property}: ${stringify(node.value, level)}`;
+    switch (node.status) {
+      case 'unmodified':
+        return `    ${tab(level)}${node.property}: ${stringify(node.value, level)}`;
+      case 'modified':
+        return [
+          `  ${tab(level)}- ${node.property}: ${stringify(node.oldValue, level)}`,
+          `  ${tab(level)}+ ${node.property}: ${stringify(node.newValue, level)}`,
+        ];
+      case 'added':
+        return `  ${tab(level)}+ ${node.property}: ${stringify(node.value, level)}`;
+      case 'deleted':
+        return `  ${tab(level)}- ${node.property}: ${stringify(node.value, level)}`;
+      case 'merged':
+        return `${tab(level + 1)}${node.property}: {\n${buildTreeFormat(node.children, level + 1)}\n${tab(level + 1)}}`;
+      default:
+        throw new Error(`Unknown node status! ${node.status} is wrong!`);
     }
-    if (node.status === 'modified') {
-      return [
-        `  ${tab(level)}- ${node.property}: ${stringify(node.oldValue, level)}`,
-        `  ${tab(level)}+ ${node.property}: ${stringify(node.newValue, level)}`,
-      ];
-    }
-    if (node.status === 'added') {
-      return `  ${tab(level)}+ ${node.property}: ${stringify(node.value, level)}`;
-    }
-    if (node.status === 'deleted') {
-      return `  ${tab(level)}- ${node.property}: ${stringify(node.value, level)}`;
-    }
-    return `${tab(level + 1)}${node.property}: {\n${buildTreeFormat(node.children, level + 1)}\n${tab(level + 1)}}`;
   });
   return result.join('\n');
 };
