@@ -1,15 +1,14 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
-import { isObject } from 'lodash';
+import { isObject, isBoolean } from 'lodash';
 
-// for ini
 const normalize = (config) => {
   const entries = Object.entries(config);
   const result = entries.reduce((acc, [key, value]) => {
     if (isObject(value)) {
       return { ...acc, [key]: normalize(value) };
     }
-    if (typeof value === 'boolean') {
+    if (isBoolean(value)) {
       return { ...acc, [key]: value };
     }
     if (Number.isNaN(Number(value))) {
@@ -26,11 +25,6 @@ const parsers = {
   '.yml': yaml.safeLoad,
 };
 
-const getParser = (extention, fileData) => parsers[extention](fileData);
-
-export const parse = (ext, fileData) => {
-  const parseFile = getParser(ext, fileData);
-  return ext === '.ini' ? normalize(parseFile) : parseFile;
-};
+export const parse = (type, fileData) => normalize(parsers[type](fileData));
 
 export default parse;
