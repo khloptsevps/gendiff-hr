@@ -1,3 +1,3 @@
-const formatterJson = (tree) => JSON.stringify(tree);
+const formatterJson = JSON.stringify;
 
 export default formatterJson;
