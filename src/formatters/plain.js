@@ -1,4 +1,4 @@
-import { isObject } from 'lodash';
+import { isObject, trim } from 'lodash';
 
 const checkValue = (value) => {
   if (isObject(value)) {
@@ -11,26 +11,27 @@ const checkValue = (value) => {
 };
 
 const plain = (tree) => {
-  const iter = (node, acc) => {
+  const iter = (node, path) => {
     const result = node
       .filter((nnode) => nnode.status !== 'unmodified')
       .map((n) => {
-        const property = (!n.children) ? n.property : [...acc, n.property];
-        const newProperty = [acc, property].flat().join('.');
-        if (n.children) {
-          return iter(n.children, property);
+        const newProperty = trim(`${path}.${n.property}`, '.');
+        switch (n.status) {
+          case 'modified':
+            return `Property '${newProperty}' was changed from ${checkValue(n.oldValue)} to ${checkValue(n.newValue)}`;
+          case 'added':
+            return `Property '${newProperty}' was added with value: ${checkValue(n.value)}`;
+          case 'deleted':
+            return `Property '${newProperty}' was deleted`;
+          case 'merged':
+            return iter(n.children, newProperty);
+          default:
+            throw new Error(`Unknown node status! ${node.status} is wrong!`);
         }
-        if (n.status === 'added') {
-          return `Property '${newProperty}' was added with value: ${checkValue(n.value)}`;
-        }
-        if (n.status === 'modified') {
-          return `Property '${newProperty}' was changed from ${checkValue(n.oldValue)} to ${checkValue(n.newValue)}`;
-        }
-        return `Property '${newProperty}' was deleted`;
       });
     return result.join('\n');
   };
-  return iter(tree, []);
+  return iter(tree, '');
 };
 
 
