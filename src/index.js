@@ -9,9 +9,14 @@ import path from 'path';
 import formatRender from './formatters/index.js';
 import { parse } from './parsers.js';
 
+const getFilesKeys = (firstConfig, secondConfig) => {
+  const firstKeys = keys(firstConfig);
+  const secondKeys = keys(secondConfig);
+  return union(firstKeys, secondKeys);
+};
 // diffTree
 export const makeDifferenceTree = (beforeConfig, afterConfig) => {
-  const fileKeys = union(keys(beforeConfig), keys(afterConfig));
+  const fileKeys = getFilesKeys(beforeConfig, afterConfig);
   const result = fileKeys.map((key) => {
     if (!has(afterConfig, key)) {
       return { key, status: 'deleted', value: beforeConfig[key] };
