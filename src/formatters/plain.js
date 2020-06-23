@@ -15,7 +15,7 @@ const plain = (tree) => {
     const result = node
       .filter((nnode) => nnode.status !== 'unmodified')
       .map((n) => {
-        const newProperty = trim(`${path}.${n.property}`, '.');
+        const newProperty = trim(`${path}.${n.key}`, '.');
         switch (n.status) {
           case 'modified':
             return `Property '${newProperty}' was changed from ${checkValue(n.oldValue)} to ${checkValue(n.newValue)}`;
