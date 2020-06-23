@@ -6,39 +6,37 @@ import {
 } from 'lodash';
 import fs from 'fs';
 import path from 'path';
-import buildFormat from './formatters/index.js';
+import formatRender from './formatters/index.js';
 import { parse } from './parsers.js';
 
 // diffTree
 export const makeDifferenceTree = (beforeConfig, afterConfig) => {
-  const properties = union(keys(beforeConfig), keys(afterConfig));
-  const result = properties.map((property) => {
-    const oldValue = beforeConfig[property];
-    const newValue = afterConfig[property];
-    if (oldValue === newValue) {
-      return { property, status: 'unmodified', value: oldValue };
+  const fileKeys = union(keys(beforeConfig), keys(afterConfig));
+  const result = fileKeys.map((key) => {
+    if (!has(afterConfig, key)) {
+      return { key, status: 'deleted', value: beforeConfig[key] };
     }
-    if (!has(beforeConfig, property)) {
-      return { property, status: 'added', value: newValue };
+    if (!has(beforeConfig, key)) {
+      return { key, status: 'added', value: afterConfig[key] };
     }
-    if (!has(afterConfig, property)) {
-      return { property, status: 'deleted', value: oldValue };
+    const oldValue = beforeConfig[key];
+    const newValue = afterConfig[key];
+    if (oldValue !== newValue) {
+      const modifiedOrObject = isObject(oldValue) && isObject(newValue) ? { key, status: 'merged', children: makeDifferenceTree(oldValue, newValue) }
+        : {
+          key,
+          status: 'modified',
+          oldValue,
+          newValue,
+        };
+      return modifiedOrObject;
     }
-    if (has(beforeConfig, property) && has(afterConfig, property)
-     && isObject(oldValue) && isObject(newValue)) {
-      return { property, status: 'merged', children: makeDifferenceTree(oldValue, newValue) };
-    }
-    return {
-      property,
-      status: 'modified',
-      oldValue,
-      newValue,
-    };
+    return { key, status: 'unmodified', value: oldValue };
   });
   return result;
 };
 
-const getFileData = (pathToFile) => {
+const makeFileData = (pathToFile) => {
   const data = fs.readFileSync(path.resolve(pathToFile), 'utf-8');
   const type = path.extname(pathToFile);
 
@@ -46,14 +44,14 @@ const getFileData = (pathToFile) => {
 };
 
 const genDiff = (pathToFile1, pathToFile2, format) => {
-  const beforeConfig = getFileData(pathToFile1);
-  const afterConfig = getFileData(pathToFile2);
+  const beforeConfig = makeFileData(pathToFile1);
+  const afterConfig = makeFileData(pathToFile2);
 
   const parseBefore = parse(beforeConfig.type, beforeConfig.data);
   const parseAfter = parse(afterConfig.type, afterConfig.data);
 
   const diffTree = makeDifferenceTree(parseBefore, parseAfter);
-  const result = buildFormat(diffTree, format);
+  const result = formatRender(diffTree, format);
 
   return result;
 };
