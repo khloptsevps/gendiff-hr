@@ -3,14 +3,15 @@ import {
   isObject,
   union,
   keys,
+  trim,
 } from 'lodash';
 import fs from 'fs';
 import path from 'path';
-import formatRender from './formatters/index.js';
+import render from './formatters/index.js';
 import { parse } from './parsers.js';
 
 // diffTree
-export const makeDifferenceTree = (beforeConfig, afterConfig) => {
+export const buildDiffTree = (beforeConfig, afterConfig) => {
   const fileKeys = union(keys(beforeConfig), keys(afterConfig));
   const result = fileKeys.map((key) => {
     if (!has(afterConfig, key)) {
@@ -21,24 +22,26 @@ export const makeDifferenceTree = (beforeConfig, afterConfig) => {
     }
     const oldValue = beforeConfig[key];
     const newValue = afterConfig[key];
-    if (oldValue !== newValue) {
-      const modifiedOrObject = isObject(oldValue) && isObject(newValue) ? { key, status: 'merged', children: makeDifferenceTree(oldValue, newValue) }
-        : {
-          key,
-          status: 'modified',
-          oldValue,
-          newValue,
-        };
-      return modifiedOrObject;
+    if (oldValue === newValue) {
+      return { key, status: 'unmodified', value: oldValue };
     }
-    return { key, status: 'unmodified', value: oldValue };
+    if (isObject(oldValue) && isObject(newValue)) {
+      return { key, status: 'merged', children: buildDiffTree(oldValue, newValue) };
+    }
+    const modifiedNode = {
+      key,
+      status: 'modified',
+      oldValue,
+      newValue,
+    };
+    return modifiedNode;
   });
   return result;
 };
 
 const makeFileData = (pathToFile) => {
   const data = fs.readFileSync(path.resolve(pathToFile), 'utf-8');
-  const type = path.extname(pathToFile);
+  const type = trim(path.extname(pathToFile), '.');
 
   return { data, type };
 };
@@ -50,8 +53,8 @@ const genDiff = (pathToFile1, pathToFile2, format) => {
   const parseBefore = parse(beforeConfig.type, beforeConfig.data);
   const parseAfter = parse(afterConfig.type, afterConfig.data);
 
-  const diffTree = makeDifferenceTree(parseBefore, parseAfter);
-  const result = formatRender(diffTree, format);
+  const diffTree = buildDiffTree(parseBefore, parseAfter);
+  const result = render(diffTree, format);
 
   return result;
 };
