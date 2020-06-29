@@ -2,8 +2,8 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 import { isObject, isBoolean, keys } from 'lodash';
 
-const myIniParse = (fileData) => {
-  const parseFile = ini.parse(fileData);
+const myIniParse = (data) => {
+  const parseFile = ini.parse(data);
 
   const normalize = (config) => {
     const configKeys = keys(config);
@@ -25,18 +25,18 @@ const myIniParse = (fileData) => {
   return normalize(parseFile);
 };
 
-export const parse = (type, fileData) => {
+export const parse = (type, data) => {
   switch (type) {
-    case '.json':
-      return JSON.parse(fileData);
-    case '.yaml':
-      return yaml.safeLoad(fileData);
-    case '.yml':
-      return yaml.safeLoad(fileData);
-    case '.ini':
-      return myIniParse(fileData);
+    case 'json':
+      return JSON.parse(data);
+    case 'yaml':
+      return yaml.safeLoad(data);
+    case 'yml':
+      return yaml.safeLoad(data);
+    case 'ini':
+      return myIniParse(data);
     default:
-      throw new Error(`Unknown file type! ${type} is not supported!`);
+      throw new Error(`Unknown data type! ${type} is not supported!`);
   }
 };
 
