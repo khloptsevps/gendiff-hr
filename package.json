@@ -1,6 +1,6 @@
 {
   "name": "gendiff-hr",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "second project by Hexlet",
   "main": "dist/index.js",
   "bin": {
