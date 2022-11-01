@@ -1,10 +1,14 @@
 [![Node.js CI](https://github.com/khloptsevps/gendiff-hr/workflows/Node.js%20CI/badge.svg?branch=master&event=push)](https://github.com/khloptsevps/gendiff-hr/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/8a394bc756dc729b6f90/maintainability)](https://codeclimate.com/github/khloptsevps/gendiff-hr/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/8a394bc756dc729b6f90/test_coverage)](https://codeclimate.com/github/khloptsevps/gendiff-hr/test_coverage)
 
-# "Вычислитель отличий" / "Generate Difference" 
+# Вычислитель отличий / Generate Difference
+Учебный проект школы программирования ["Hexlet"](https://ru.hexlet.io/?ref=252944).
 
-## Проект "Вычислитель отличий" / Project "Generate Difference"
-Учебный проект школы программирования ["Hexlet"](https://ru.hexlet.io/?ref=252944).  
-Утилита для поиска отличий в конфигурационных файлах.
+## Описание
+Вычислитель отличий – программа, определяющая разницу между двумя структурами данных. Это популярная задача, для решения которой существует множество онлайн сервисов, например http://www.jsondiff.com/. Подобный механизм используется при выводе тестов или при автоматическом отслеживании изменении в конфигурационных файлах.
+
+### Возможности утилиты:
+  - Поддержка разных входных форматов: yaml, json
+  - Генерация отчета в виде plain text, stylish и json
 
 ## Цель:
 
@@ -28,11 +32,6 @@ commander.js](https://github.com/tj/commander.js)
     - [js-yaml](https://github.com/nodeca/js-yaml)
     - [lodash](https://lodash.com/)
     - [jest](https://jestjs.io/)
-
-## Возможности утилиты:
-
-* Поддержка разных форматов: json, yml, ini;
-* Генерация отчета в виде plain text, tree и json;
 
 ## Setup
 
